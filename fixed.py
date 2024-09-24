@@ -73,28 +73,8 @@ def to_ns_str(s: str): return msg(libobjc.objc_getClass(b"NSString"),
 
 
 # Here's the fixed example by calling the dyld runtime directly
-src = """#include <metal_stdlib>
-using namespace metal;
-kernel void r_5(device int* data0, const device int* data1, uint3 gid [[threadgroup_position_in_grid]], uint3 lid [[thread_position_in_threadgroup]]) {
-  int acc0 = -2147483648;
-  int val0 = *(data1+0);
-  int val1 = *(data1+1);
-  int val2 = *(data1+2);
-  int val3 = *(data1+3);
-  int val4 = *(data1+4);
-  int alu0 = max(((val0+1)*2*val0),0);
-  int alu1 = max(((val1+1)*2*val1),0);
-  int alu2 = max(((val2+1)*2*val2),0);
-  int alu3 = max(((val3+1)*2*val3),0);
-  int alu4 = max(((val4+1)*2*val4),0);
-  int alu5 = max(alu0,acc0);
-  int alu6 = max(alu1,alu5);
-  int alu7 = max(alu2,alu6);
-  int alu8 = max(alu3,alu7);
-  int alu9 = max(alu4,alu8);
-  *(data0+0) = alu9;
-}"""
-
+src = "#include <metal_stdlib>\nkernel void r_5(device int* data0, const device int* data1, uint3 gid [[threadgroup_position_in_grid]], uint3 lid [[thread_position_in_threadgroup]]) {data0[0] = 0;}"
+print(f"src len: {len(src)}")
 
 def get_err_str(err):
     if err.value is None:
@@ -118,10 +98,10 @@ if library.value is None:
     exit(1)
 
 library_contents = msg(library, "libraryDataContents", restype=objc_instance)
-objc_returned_len = msg(library_contents, "length", restype=objc_instance)
-print(f"{objc_returned_len.value=}")
+objc_returned_len = msg(library_contents, "length", restype=ctypes.c_ulong)
+print(f"{objc_returned_len=}")
 lib_bytes = ctypes.string_at(msg(library_contents, "bytes"), cast(
-    int, objc_returned_len.value))
+    int, objc_returned_len))
 
 print("lib len", len(lib_bytes))
 name = "r_5"
