@@ -45,7 +45,7 @@ class MTLPipelineOption:
     MTLPipelineOptionNone = 0
 
 
-libobjc = find_and_load("/usr/lib/libobjc.dylib")
+libobjc = ctypes.CDLL("/usr/lib/libobjc.dylib")
 libmetal = find_and_load("/Library/Frameworks/Metal.framework/Metal")
 # Must be loaded for default Metal Device: https://developer.apple.com/documentation/metal/1433401-mtlcreatesystemdefaultdevice?language=objc
 find_and_load("/Library/Frameworks/CoreGraphics.framework/CoreGraphics")
@@ -106,7 +106,7 @@ lib_bytes = ctypes.string_at(msg(library_contents, "bytes"), cast(
 print("lib len", len(lib_bytes))
 name = "r_5"
 data = libdispatch.dispatch_data_create(lib_bytes, len(lib_bytes), None, None)
-
+print("data", data)
 newLibError = objc_instance(0)
 library2 = msg(device, "newLibraryWithData:error:", data,
                ctypes.byref(newLibError), restype=objc_instance)
