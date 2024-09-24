@@ -118,8 +118,10 @@ if library.value is None:
     exit(1)
 
 library_contents = msg(library, "libraryDataContents", restype=objc_instance)
+objc_returned_len = msg(library_contents, "length", restype=ctypes.c_ulong)
+print(f"{objc_returned_len=}")
 lib_bytes = ctypes.string_at(msg(library_contents, "bytes"), cast(
-    int, msg(library_contents, "length", restype=ctypes.c_ulong)))
+    int, objc_returned_len))
 
 print("lib len", len(lib_bytes))
 name = "r_5"
