@@ -7,6 +7,10 @@ Darwin pg20.local 23.6.0 Darwin Kernel Version 23.6.0: Mon Jul 29 21:16:46 PDT 2
 $ python --version
 Python 3.10.0
 
+$ pip install pyobjc-framework-Metal
+
+$ pip install pyobjc-framework-libdispatch
+
 $ python invalid_lib_reproduce.py
 
 options=<MTLCompileOptionsInternal: 0x60000185c200>
