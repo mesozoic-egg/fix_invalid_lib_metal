@@ -121,6 +121,7 @@ library_contents = msg(library, "libraryDataContents", restype=objc_instance)
 lib_bytes = ctypes.string_at(msg(library_contents, "bytes"), cast(
     int, msg(library_contents, "length", restype=ctypes.c_ulong)))
 
+print("lib len", len(lib_bytes))
 name = "r_5"
 data = libdispatch.dispatch_data_create(lib_bytes, len(lib_bytes), None, None)
 
