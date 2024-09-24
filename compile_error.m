@@ -43,10 +43,12 @@ int main(int argc, char** argv)
          options: compileOptions error: nil];
 
 
-        id<NSObject> libraryDataContents = [library libraryDataContents];
+        NSData *libraryDataContents = [(id)library libraryDataContents];
         printf("libraryDataContents: %p\n", libraryDataContents);
-        id<NSObject> length = [libraryDataContents length];
+        NSUInteger length = [libraryDataContents length];
         printf("length: %d\n", length);
+        char *name = object_getClassName(libraryDataContents);
+        printf("name: %s\n", name);
         return 0;
         id<MTLFunction> kernelFunction = [library newFunctionWithName:@"add"];
         NSError *error = NULL;
